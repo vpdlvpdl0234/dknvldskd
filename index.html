@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My Phone</title>
+<title>あさくら의 iPhone</title>
 <style>
 :root{--bg:#e9e9ee;color-scheme:light dark}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1c1e}}
@@ -169,6 +169,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,"Apple SD G
 .pkk{position:absolute;width:78px;height:78px;border-radius:50%;background:#ffffff38;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}.pkk:active{background:#ffffff78}.pkk b{font-size:38px;font-weight:300;line-height:1}.pkk small{font-size:10.5px;font-weight:700;letter-spacing:3px;height:11px;line-height:11px}
 .pl1,.pl2{position:absolute;top:640px;font-size:16px;cursor:pointer}.pl1{left:30px}.pl2{right:30px}
 @keyframes shk{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}.shk{animation:shk .4s}
+.app[data-k=cal],.app[data-k=photos],.app[data-k=cam],.app[data-k=set],.app[data-k=clock],.app[data-k=rem]{cursor:default}
 .plain{height:100%;background:#f2f2f7;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#555;font-size:18px}
 </style></head><body>
 <div id="stage"><div id="frame"><div id="scr">
@@ -236,7 +237,7 @@ function open(k){
   const inp=a.querySelector('input');inp.onkeydown=e=>{if(e.key=='Enter'&&inp.value.trim()){const d=document.createElement('div');d.className='bub R';d.textContent=inp.value;m.appendChild(d);inp.value='';m.scrollTop=m.scrollHeight}};inp.onfocus=()=>{if(demo)return;demo=true;inp.blur();const t='소개팅 받을까요?';let i=0;const iv=setInterval(()=>{inp.value=t.slice(0,++i);if(i>=t.length){clearInterval(iv);setTimeout(()=>{inp.value='';C+='\nR|'+t;const d=document.createElement('div');d.className='bub R';d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight;setTimeout(incoming,3000)},600)}},200)}}
 }
 function goHome(){$('appl').style.display='none';cur='home';setSB(true)}
-document.addEventListener('click',e=>{const a=e.target.closest('.app');if(a&&cur=='home'&&$('lock').style.display!='block')open(a.dataset.k=='msg'?'msg':a.dataset.k)});
+document.addEventListener('click',e=>{const a=e.target.closest('.app');if(a&&['photos','cal','cam','set','clock','rem'].includes(a.dataset.k))return;if(a&&cur=='home'&&$('lock').style.display!='block')open(a.dataset.k=='msg'?'msg':a.dataset.k)});
 const I='赤ちゃん🍓';const T0=new Date();const nowT=()=>{const h=T0.getHours();return (h<12?'오전 ':'오후 ')+(h%12||12)+':'+String(T0.getMinutes()).padStart(2,'0')};
 const calls=[['어제',[[I,'2026. 10. 23.',0],[I,'2026. 10. 23.',1]]],['지난달',[['お母さん','2026. 9. 14.',0],[I,'2026. 9. 13.',0],[I,'2026. 9. 12.',1]]],['올해',[[I,'2026. 8. 27.',0],['りんご','2026. 8. 26.',0],[I,'2026. 7. 28.',0],['お母さん','2026. 4. 9.',0]]]];
 function FT(){return `<div class="ft"><div class="ed">편집</div><h1>FaceTime</h1><div class="fb"><div><span style="font-size:20px">🔗</span>링크 생성</div><div><span style="font-size:20px">📹</span>새로운 FaceTime</div></div>`+calls.map(c=>`<div class="sec">${c[0]}</div><div class="sl">`+c[1].map(r=>`<div class="row ${r[2]?'miss':''}"><div class="av">${[...r[0]][0]}</div><div><div class="n">${r[0]}</div><div class="s">📹 FaceTime 영상 통화</div></div><div class="dt">${r[1]}</div><div class="inf">i</div></div>`).join('')+'</div>').join('')+'</div>'}
@@ -513,7 +514,7 @@ L|너 또 홧김에 받으려고?
 R|아니야
 R|이번엔 진짜 마음 정리 했어요
 L|조금 더 생각해봐
-L|너 이러는 거 벌써 4번째다;
+L|이러는 거 벌써 3번째인 건 알지?
 R|...알겠어요`.split('\n'),done:0},
 b:{n:'ひな',u:'hina_',t:'56주',m:`D|2025년 9월 18일
 L|토와 뭐해?
@@ -585,7 +586,7 @@ let pin='';
 function upd(){document.querySelectorAll('#pd i').forEach((e,i)=>e.classList.toggle('on',i<pin.length))}
 function buildPass(){const rows=[305,398,491,584],cols=[55,158,260];
  $('pass').innerHTML=`<div class="pt">암호 입력</div><div class="pd" id="pd"><i></i><i></i><i></i><i></i></div>`+PK.map((k,i)=>{const r=i<9?Math.floor(i/3):3,c=i<9?i%3:1;return `<div class="pkk" data-d="${k[0]}" style="left:${cols[c]}px;top:${rows[r]-39}px"><b>${k[0]}</b><small>${k[1]}</small></div>`}).join('')+`<div class="pl1">긴급 구조</div><div class="pl2" id="pcn">취소</div><div class="hbar"></div>`;
- $('pcn').onclick=()=>{$('pass').style.display='none';setSB(true)}}
+ $('pcn').onclick=()=>{if(pin.length&&pin.length<4){pin=pin.slice(0,-1);upd()}}}
 function showPass(){if($('lock').style.display=='none')return;pin='';buildPass();$('pass').style.display='block';$('pass').style.opacity=1;setSB(false)}
 function okPass(){const p=$('pass');setTimeout(()=>{p.style.opacity=0;unlock();setTimeout(()=>{p.style.display='none';p.style.opacity=1},450)},180)}
 function pk(d){if(pin.length>=4)return;pin+=d;upd();if(pin.length==4){if(pin=='0101')okPass();else{const e=$('pd');e.classList.add('shk');setTimeout(()=>{e.classList.remove('shk');pin='';upd()},450)}}}
